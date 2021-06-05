@@ -6,6 +6,11 @@ public class PlayerBehaviour : MonoBehaviour
 {
     private bool isMoveing;
     private Quaternion facingDirection;
+    [SerializeField] float movementSpeed;
+
+
+
+
     void Start()
     {
         isMoveing = false;
@@ -30,7 +35,7 @@ public class PlayerBehaviour : MonoBehaviour
             isMoveing = true;
         }
         Rotation(_x, _y);
-        transform.position += new Vector3(_x,_y,0) *Time.deltaTime *3;
+        transform.position += new Vector3(_x,_y,0) *Time.deltaTime *movementSpeed;
 
 
     }
@@ -50,7 +55,14 @@ public class PlayerBehaviour : MonoBehaviour
             }
 
 
-            var _angle = Mathf.Atan(_y*2) * Mathf.Rad2Deg;
+            var _angle = Mathf.Atan(_y*3) * Mathf.Rad2Deg;
+            if(_y >0){
+                _angle -= _x*30 * _facingDir;
+            }
+            else if(_y < 0){
+                _angle += _x * 30* _facingDir;
+            }
+
             transform.rotation = Quaternion.AngleAxis(_angle *_facingDir, Vector3.forward) * facingDirection;
 
         }
