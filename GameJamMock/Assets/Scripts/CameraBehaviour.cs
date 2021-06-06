@@ -4,9 +4,11 @@ using UnityEngine;
 
 public class CameraBehaviour : MonoBehaviour
 {
+    
     public Transform Player;
     Vector3 offset;
     Vector2 cameraScale;
+    
 
     void Start()
     {
@@ -15,7 +17,7 @@ public class CameraBehaviour : MonoBehaviour
     }
 
     
-    void LateUpdate()
+    void FixedUpdate()
     {
         Movement();
         Scale();
@@ -36,7 +38,7 @@ public class CameraBehaviour : MonoBehaviour
 
         _scaleVector.Normalize();
         cameraScale = Vector2.Lerp(cameraScale, _scaleVector, Time.deltaTime*0.5f);
-        var _scaleFactor = Mathf.Sqrt(cameraScale.x * cameraScale.x + cameraScale.y * cameraScale.y)*10 +10;
+        var _scaleFactor = Mathf.Sqrt(cameraScale.x * cameraScale.x + cameraScale.y * cameraScale.y)*15 +10;
         GetComponent<Camera>().orthographicSize = _scaleFactor;
 
         

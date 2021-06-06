@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class PlayerBehaviour : MonoBehaviour
 {
+
+    public static bool isGrounded = false;
     private bool isMoveing;
     private Quaternion facingDirection;
     [SerializeField] float movementSpeed;
@@ -18,28 +20,74 @@ public class PlayerBehaviour : MonoBehaviour
     }
 
     
-    void Update()
+    void FixedUpdate()
     {
-        Movement();
+        
+        
+        if (!isGrounded)
+        {
+            AirMovement();
+            CheckIfGrounded();
+        }
+        else
+        {
+            GroundMovement();
+        }
+        
     }
 
-    void Movement()
+    void CheckIfGrounded()
+    {
+        var _GroundCheckerPosition = new Vector2(transform.position.x, transform.position.y) + new Vector2(0, -2);
+        var _GroundCheckerSize = new Vector2(1, 1);
+        var _GroundCheckerAngle = 0;
+        var _GroundCheckerDirection = new Vector2(0,-1);
+        RaycastHit2D hit = Physics2D.BoxCast(_GroundCheckerPosition, _GroundCheckerSize, _GroundCheckerAngle, _GroundCheckerDirection, 2);
+        try
+        {
+            
+
+                if (hit.transform.gameObject.layer == 6)
+                {
+                    isGrounded = true;
+                    InitializeGroundMovement();
+                }
+                else
+                {
+                
+                isGrounded = false;
+                
+                }
+            
+        }
+        catch
+        {
+            return;
+        }
+        
+        
+    }
+
+    void AirMovement()
     {
         float _x = Input.GetAxis("Horizontal");
         float _y = Input.GetAxis("Vertical");
+        var _Rigidbody = gameObject.GetComponent<Rigidbody2D>();
 
-        if(_x == 0 && _y ==0){
+
+        if (_x == 0 && _y ==0){
             isMoveing = false;
         }
         else{
             isMoveing = true;
         }
-        Rotation(_x, _y);
-        transform.position += new Vector3(_x,_y,0) *Time.deltaTime *movementSpeed;
+        AirRotation(_x, _y);
+        _Rigidbody.AddForce(new Vector2(_x, _y)*movementSpeed*10);
+        //transform.position += new Vector3(_x,_y,0) *Time.deltaTime *movementSpeed;
 
 
     }
-    void Rotation(float _x, float _y)
+    void AirRotation(float _x, float _y)
     {
         
         if (isMoveing)
@@ -69,6 +117,23 @@ public class PlayerBehaviour : MonoBehaviour
         else{
             transform.rotation = facingDirection;
         }
+    }
+
+    void InitializeGroundMovement()
+    {
+        var _Rigidbody = gameObject.GetComponent<Rigidbody2D>();
+        _Rigidbody.gravityScale = 1;
+
+        
+        
+    }
+    void GroundMovement()
+    {
+        var _x = Input.GetAxis("Horizontal");
+        var _y = Input.GetAxis("Vertical");
+        var _Rigidbody = gameObject.GetComponent<Rigidbody2D>();
+        transform.position += new Vector3(_x,0,0) *Time.deltaTime *movementSpeed;
+
     }
 
 }
