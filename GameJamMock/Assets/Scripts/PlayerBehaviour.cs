@@ -67,6 +67,12 @@ public class PlayerBehaviour : MonoBehaviour
         
         
     }
+    void InitializeAirMovement()
+    {
+        var _Rigidbody = gameObject.GetComponent<Rigidbody2D>();
+        _Rigidbody.gravityScale = 0;
+        _Rigidbody.freezeRotation = false;
+    }
 
     void AirMovement()
     {
@@ -123,17 +129,46 @@ public class PlayerBehaviour : MonoBehaviour
     {
         var _Rigidbody = gameObject.GetComponent<Rigidbody2D>();
         _Rigidbody.gravityScale = 1;
-
+        _Rigidbody.freezeRotation = true;
         
         
     }
     void GroundMovement()
     {
+        GroundRotation();
         var _x = Input.GetAxis("Horizontal");
         var _y = Input.GetAxis("Vertical");
         var _Rigidbody = gameObject.GetComponent<Rigidbody2D>();
         transform.position += new Vector3(_x,0,0) *Time.deltaTime *movementSpeed;
 
+    }
+    void GroundRotation()
+    {
+        float _x = Input.GetAxis("Horizontal");
+
+        if (isMoveing)
+        {
+            var _facingDir = 1;
+            if (_x < 0)
+            {
+                facingDirection = Quaternion.Euler(new Vector3(0, 180, 0));
+                _facingDir = -1;
+            }
+            else
+            {
+                facingDirection = Quaternion.Euler(new Vector3(0, 0, 0));
+                _facingDir = 1;
+            }
+
+
+
+            transform.rotation = Quaternion.AngleAxis( _facingDir, Vector3.forward) * facingDirection;
+
+        }
+        else
+        {
+            transform.rotation = facingDirection;
+        }
     }
 
 }
