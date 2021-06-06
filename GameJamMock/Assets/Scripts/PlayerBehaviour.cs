@@ -51,19 +51,23 @@ public class PlayerBehaviour : MonoBehaviour
                 {
                     isGrounded = true;
                     InitializeGroundMovement();
+                
                 }
                 else
                 {
-                
-                isGrounded = false;
-                
+
+
+                return;
+
                 }
             
         }
         catch
         {
-            return;
+            isGrounded = false;
+            InitializeAirMovement();
         }
+        
         
         
     }
@@ -89,7 +93,7 @@ public class PlayerBehaviour : MonoBehaviour
         }
         AirRotation(_x, _y);
         _Rigidbody.AddForce(new Vector2(_x, _y)*movementSpeed*10);
-        //transform.position += new Vector3(_x,_y,0) *Time.deltaTime *movementSpeed;
+       
 
 
     }
@@ -139,8 +143,21 @@ public class PlayerBehaviour : MonoBehaviour
         var _x = Input.GetAxis("Horizontal");
         var _y = Input.GetAxis("Vertical");
         var _Rigidbody = gameObject.GetComponent<Rigidbody2D>();
+        Jump();
         transform.position += new Vector3(_x,0,0) *Time.deltaTime *movementSpeed;
+        
+    }
 
+    void Jump()
+    {
+        
+        if (Input.GetKey(KeyCode.Space))
+        {
+            CheckIfGrounded();
+            var _Rigidbody = gameObject.GetComponent<Rigidbody2D>();
+            _Rigidbody.AddForce(new Vector2(0, 1000));
+            
+        }
     }
     void GroundRotation()
     {
