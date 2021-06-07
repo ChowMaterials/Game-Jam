@@ -151,7 +151,7 @@ public class PlayerBehaviour : MonoBehaviour
     void Jump()
     {
         
-        if (Input.GetKey(KeyCode.Space))
+        if (Input.GetKey(KeyCode.W))
         {
             CheckIfGrounded();
             var _Rigidbody = gameObject.GetComponent<Rigidbody2D>();
