@@ -8,13 +8,14 @@ public class MainMenueScript : MonoBehaviour
     public AudioSource Music;
     public Transform Ship;
     public Transform[] Background;
+    public Transform[] Platforms;
     private float timer;
     
 
     void Start()
     {
         timer = 0;
-        //Music.Play();
+        
     }
 
     void Update()
@@ -22,6 +23,7 @@ public class MainMenueScript : MonoBehaviour
         timer += Time.deltaTime;
         ShipMovement();
         MoveBackGround();
+        MovePlatforms();
     }
     
     void ShipMovement()
@@ -41,8 +43,20 @@ public class MainMenueScript : MonoBehaviour
             }
         }
     }
+    void MovePlatforms()
+    {
+        for (int i = 0; i < Platforms.Length; i++)
+        {
+            Platforms[i].position += new Vector3(-1 * Time.deltaTime * Platforms[i].lossyScale.x , 0, 0);
+
+            if (Platforms[i].position.x <= -20)
+            {
+                Platforms[i].position += new Vector3(36, 0, 0);
+            }
 
 
+        }
+    }
     public void Play()
     {
         SceneManager.LoadScene(1);
