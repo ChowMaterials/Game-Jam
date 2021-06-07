@@ -38,7 +38,7 @@ public class PlayerBehaviour : MonoBehaviour
 
     void CheckIfGrounded()
     {
-        var _GroundCheckerPosition = new Vector2(transform.position.x, transform.position.y) + new Vector2(0, -2);
+        var _GroundCheckerPosition = new Vector2(transform.position.x, transform.position.y) + new Vector2(0, -1.3f);
         var _GroundCheckerSize = new Vector2(1, 1);
         var _GroundCheckerAngle = 0;
         var _GroundCheckerDirection = new Vector2(0,-1);
@@ -144,7 +144,7 @@ public class PlayerBehaviour : MonoBehaviour
         var _y = Input.GetAxis("Vertical");
         var _Rigidbody = gameObject.GetComponent<Rigidbody2D>();
         Jump();
-        transform.position += new Vector3(_x,0,0) *Time.deltaTime *movementSpeed;
+        transform.position += new Vector3(_x,0,0) *Time.deltaTime *movementSpeed*0.1f;
         
     }
 
