@@ -2,9 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class MainMenueScript : MonoBehaviour
 {
+    public Slider MusicVolumeSlide;
     public AudioSource Music;
     public Transform Ship;
     public Transform[] Background;
@@ -24,6 +26,7 @@ public class MainMenueScript : MonoBehaviour
         ShipMovement();
         MoveBackGround();
         MovePlatforms();
+        AudioControll();
     }
     
     void ShipMovement()
@@ -57,6 +60,13 @@ public class MainMenueScript : MonoBehaviour
 
         }
     }
+
+    void AudioControll()
+    {
+        Music.volume = MusicVolumeSlide.value;
+    }
+
+
     public void Play()
     {
         SceneManager.LoadScene(1);
