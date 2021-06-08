@@ -2,19 +2,22 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class MainMenueScript : MonoBehaviour
 {
+    public Slider MusicVolumeSlide;
     public AudioSource Music;
     public Transform Ship;
     public Transform[] Background;
+    public Transform[] Platforms;
     private float timer;
     
 
     void Start()
     {
         timer = 0;
-        //Music.Play();
+        
     }
 
     void Update()
@@ -22,6 +25,8 @@ public class MainMenueScript : MonoBehaviour
         timer += Time.deltaTime;
         ShipMovement();
         MoveBackGround();
+        MovePlatforms();
+        AudioControll();
     }
     
     void ShipMovement()
@@ -40,6 +45,25 @@ public class MainMenueScript : MonoBehaviour
                 Background[i].position += new Vector3(36, 0, 0);   
             }
         }
+    }
+    void MovePlatforms()
+    {
+        for (int i = 0; i < Platforms.Length; i++)
+        {
+            Platforms[i].position += new Vector3(-1 * Time.deltaTime * Platforms[i].lossyScale.x , 0, 0);
+
+            if (Platforms[i].position.x <= -20)
+            {
+                Platforms[i].position += new Vector3(36, 0, 0);
+            }
+
+
+        }
+    }
+
+    void AudioControll()
+    {
+        Music.volume = MusicVolumeSlide.value;
     }
 
 
